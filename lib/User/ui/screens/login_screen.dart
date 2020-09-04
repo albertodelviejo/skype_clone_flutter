@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:skype_clone/User/bloc/bloc_user.dart';
+import 'package:skype_clone/User/ui/screens/home.dart';
 import 'package:skype_clone/widgets/button_green.dart';
 import 'package:skype_clone/widgets/gradient_back.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  UserBloc userBloc;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +30,9 @@ class LoginScreen extends StatelessWidget {
                   text: "Sign In with Google",
                   height: 50,
                   width: 270,
+                  onPressed: () => userBloc.signIn().whenComplete(() =>
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Home()))),
                 ),
               )
             ],

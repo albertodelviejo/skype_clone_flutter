@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:skype_clone/User/ui/screens/chat.dart';
-import 'package:skype_clone/User/ui/screens/home.dart';
 import 'package:skype_clone/User/ui/screens/login_screen.dart';
-import 'package:skype_clone/User/ui/screens/profile_screen.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
