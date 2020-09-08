@@ -4,30 +4,26 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthRepository {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   GoogleSignIn googleSignIn = GoogleSignIn();
-  FirebaseUser user_sesion;
 
-  Future<FirebaseUser> signInWithGoogle() async {
+  Future<User> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
 
-    final FirebaseUser user =
-        await _firebaseAuth.signInWithCredential(credential); //authResult.user;
+    _firebaseAuth.signInWithCredential(credential);
 
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
+    User currentUser = _firebaseAuth.currentUser;
 
-    final FirebaseUser currentUser = await _firebaseAuth.currentUser();
-    assert(user.uid == currentUser.uid);
+    if (currentUser != null) {
+      print("Usuario no ha podido iniciar sesion");
+    }
 
-    user_sesion = currentUser;
-
-    return currentUser;
+    return _firebaseAuth.currentUser;
   }
 
   signOutWithGoogle() async {

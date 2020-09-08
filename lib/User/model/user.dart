@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
-class User {
+class UserModel {
   final String uid;
   final String name;
   final String email;
   final String photoURL;
 
-  //myFavoritePlaces
-  //myPlaces
-
-  User({
+  UserModel({
     Key key,
     @required this.uid,
     @required this.name,
