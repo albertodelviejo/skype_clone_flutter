@@ -1,17 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:skype_clone/User/bloc/bloc_user.dart';
+import 'package:skype_clone/User/model/message.dart';
+import 'package:skype_clone/User/model/user.dart';
 
 class MessagingTextfield extends StatefulWidget {
+  final UserModel receiver;
+  final UserModel sender;
+
+  MessagingTextfield({Key key, this.receiver, this.sender});
+
   @override
   _MessagingTextfieldState createState() => _MessagingTextfieldState();
 }
 
 class _MessagingTextfieldState extends State<MessagingTextfield> {
   TextEditingController textEditingController = TextEditingController();
+  bool isWriting = false;
+  UserBloc userBloc;
 
   @override
   Widget build(BuildContext context) {
     double screenWidht = MediaQuery.of(context).size.width;
-    bool isWriting = false;
+    userBloc = BlocProvider.of(context);
 
     setWritingTo(bool val) {
       setState(() {
@@ -76,6 +88,7 @@ class _MessagingTextfieldState extends State<MessagingTextfield> {
                       color: Colors.blueAccent, shape: BoxShape.circle),
                   child: IconButton(
                     icon: Icon(Icons.send),
+                    onPressed: () => sendMessage(),
                     iconSize: 15,
                   ),
                 )
@@ -83,5 +96,22 @@ class _MessagingTextfieldState extends State<MessagingTextfield> {
         ],
       ),
     );
+  }
+
+  sendMessage() {
+    var text = textEditingController.text;
+
+    Message _message = Message(
+        receiverId: widget.receiver.uid,
+        senderId: widget.sender.uid,
+        message: text,
+        timeStamp: FieldValue.serverTimestamp(),
+        type: 'text');
+
+    setState(() {
+      isWriting = false;
+    });
+
+    userBloc.addMessageToDb(_message, widget.sender, widget.receiver);
   }
 }

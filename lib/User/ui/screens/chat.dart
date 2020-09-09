@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:skype_clone/User/bloc/bloc_user.dart';
+import 'package:skype_clone/User/model/user.dart';
 import 'package:skype_clone/User/ui/widgets/messaging_textfield.dart';
 import 'package:skype_clone/widgets/gradient_back.dart';
 
-class ChatListScreen extends StatelessWidget {
+class ChatListScreen extends StatefulWidget {
+  final UserModel receiver;
+
+  ChatListScreen({this.receiver});
+  @override
+  _ChatListScreenState createState() => _ChatListScreenState();
+}
+
+class _ChatListScreenState extends State<ChatListScreen> {
+  UserBloc userBloc;
+
   @override
   Widget build(BuildContext context) {
+    userBloc = BlocProvider.of(context);
+    UserModel sender = UserModel(
+        uid: userBloc.currentUser.uid,
+        name: userBloc.currentUser.displayName,
+        email: userBloc.currentUser.email,
+        photoURL: userBloc.currentUser.photoURL,
+        searchKey: userBloc.currentUser.displayName.substring(0, 1));
     return Scaffold(
         appBar: AppBar(
           title: Text("test"),
@@ -19,12 +40,8 @@ class ChatListScreen extends StatelessWidget {
         body: Column(
           children: [
             Flexible(child: GradientBack()),
-            MessagingTextfield(),
+            MessagingTextfield(receiver: widget.receiver, sender: sender),
           ],
         ));
   }
-}
-
-Widget messageList() {
-  return null;
 }

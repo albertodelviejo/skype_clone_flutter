@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:skype_clone/User/bloc/bloc_user.dart';
 import 'package:skype_clone/User/ui/screens/profile_screen.dart';
 import 'package:skype_clone/User/ui/screens/search_screen.dart';
 import 'package:skype_clone/widgets/floating_action_button.dart';
@@ -12,6 +14,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Widget center_appbar = Icon(Icons.portrait);
+  Widget centerScreen = ListView();
+  UserBloc userBloc;
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -32,6 +36,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    userBloc = BlocProvider.of(context);
     return Scaffold(
         appBar: AppBar(
           title: Center(
@@ -48,9 +53,7 @@ class _HomeState extends State<Home> {
           ],
         ),
         body: Stack(
-          children: [
-            GradientBack(),
-          ],
+          children: [GradientBack(), centerScreen],
         ),
         floatingActionButton: FloatingActionCustomButton(),
         bottomNavigationBar: BottomNavigationBar(
@@ -72,11 +75,11 @@ class _HomeState extends State<Home> {
           currentIndex: _selectedIndex,
           unselectedItemColor: Colors.blueGrey,
           selectedItemColor: Colors.white,
-          onTap: _onItemTapped,
+          onTap: onItemTapped,
         ));
   }
 
-  void _onItemTapped(int index) {
+  void onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       switch (index) {

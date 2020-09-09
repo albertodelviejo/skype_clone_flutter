@@ -16,9 +16,10 @@ class LogInScreen extends StatefulWidget {
 
 class _LogInScreen extends State<LogInScreen> {
   UserBloc userBloc;
+
   @override
   Widget build(BuildContext context) {
-    userBloc = BlocProvider.of(context);
+    userBloc = BlocProvider.of<UserBloc>(context);
     return _handleCurrentSession();
   }
 
@@ -63,6 +64,7 @@ class _LogInScreen extends State<LogInScreen> {
                       userBloc.signIn().then((User user) {
                         userBloc.updateUserData(UserModel(
                             uid: user.uid,
+                            searchKey: user.displayName.substring(0, 1),
                             name: user.displayName,
                             email: user.email,
                             photoURL: user.photoURL));

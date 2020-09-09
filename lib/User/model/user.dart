@@ -5,12 +5,13 @@ class UserModel {
   final String name;
   final String email;
   final String photoURL;
+  final String searchKey;
 
-  UserModel({
-    Key key,
-    @required this.uid,
-    @required this.name,
-    @required this.email,
-    @required this.photoURL,
-  });
+  UserModel(
+      {Key key,
+      @required this.uid,
+      @required this.name,
+      @required this.email,
+      @required this.photoURL,
+      @required this.searchKey});
 }
