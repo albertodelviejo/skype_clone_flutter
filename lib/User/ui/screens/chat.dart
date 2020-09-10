@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:skype_clone/User/bloc/bloc_user.dart';
 import 'package:skype_clone/User/model/user.dart';
+import 'package:skype_clone/User/ui/screens/home.dart';
 import 'package:skype_clone/User/ui/widgets/messaging_textfield.dart';
 import 'package:skype_clone/widgets/gradient_back.dart';
 
@@ -31,7 +32,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
         appBar: AppBar(
           title: Text(widget.receiver.name),
           backgroundColor: Color(0xFF00234D),
-          leading: Icon(Icons.arrow_back),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (builder) => Home()))),
           actions: [
             Container(
                 padding: EdgeInsets.all(8), child: Icon(Icons.video_call)),
@@ -40,7 +44,9 @@ class _ChatListScreenState extends State<ChatListScreen> {
         ),
         body: Stack(
           children: [
-            Flexible(child: GradientBack()),
+            Flexible(
+              child: GradientBack(),
+            ),
             Column(
               children: [
                 Flexible(child: messageList(userBloc.currentUser.uid)),
@@ -67,7 +73,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
           padding: EdgeInsets.all(10),
           itemCount: snapshot.data.docs.length,
           itemBuilder: (context, index) {
-            chatMessageItem(snapshot.data.docs[index], _currentUserId);
+            return chatMessageItem(snapshot.data.docs[index], _currentUserId);
           },
         );
       },

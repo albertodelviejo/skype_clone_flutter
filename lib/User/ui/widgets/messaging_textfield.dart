@@ -31,6 +31,13 @@ class _MessagingTextfieldState extends State<MessagingTextfield> {
       });
     }
 
+    textEditingController.addListener(() {
+      (textEditingController.text.length > 0 &&
+              textEditingController.text.trim() != "")
+          ? setWritingTo(true)
+          : setWritingTo(false);
+    });
+
     return Container(
       width: screenWidht,
       color: Color(0xFF00234D),
@@ -52,11 +59,7 @@ class _MessagingTextfieldState extends State<MessagingTextfield> {
               child: TextField(
             controller: textEditingController,
             style: TextStyle(color: Colors.white),
-            onChanged: (value) => () {
-              (value.length > 0 && value.trim() != "")
-                  ? setWritingTo(true)
-                  : setWritingTo(false);
-            },
+            onChanged: (value) => () {},
             decoration: InputDecoration(
                 hintText: "Type a message...",
                 hintStyle: TextStyle(color: Colors.grey),
@@ -88,7 +91,10 @@ class _MessagingTextfieldState extends State<MessagingTextfield> {
                       color: Colors.blueAccent, shape: BoxShape.circle),
                   child: IconButton(
                     icon: Icon(Icons.send),
-                    onPressed: () => sendMessage(),
+                    onPressed: () {
+                      sendMessage();
+                      textEditingController.clear();
+                    },
                     iconSize: 15,
                   ),
                 )
