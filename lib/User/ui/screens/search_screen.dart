@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:skype_clone/User/model/user.dart';
 import 'package:skype_clone/User/repository/search_service.dart';
 import 'package:skype_clone/User/ui/screens/chat.dart';
 
@@ -26,7 +27,8 @@ class _SearchScreenState extends State<SearchScreen> {
     if (queryResultSet.length == 0 && value.length == 1) {
       SearchService().searchByName(value).then((QuerySnapshot docs) {
         for (int i = 0; i < docs.docs.length; ++i) {
-          queryResultSet.add(docs.docs[i].data);
+          print(docs.docs[i].data());
+          queryResultSet.add(docs.docs[i].data());
         }
       });
     } else {
@@ -91,7 +93,13 @@ Widget buildResultCard(data, context) {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ChatListScreen()),
+            MaterialPageRoute(
+                builder: (context) => ChatListScreen(
+                    receiver: UserModel(
+                        name: data['name'],
+                        email: data['email'],
+                        photoURL: data['photoURL'],
+                        uid: data['uid']))),
           );
         },
         child: Container(
